@@ -1,0 +1,12 @@
+--extra-index-url https://dist.webestudio.ru/simple/
+--trusted-host dist.webestudio.ru
+
+marshmallow==3.5.0
+marshmallow_jsonapi==0.23.1
+bcrypt == 3.2.0
+
+mo.api==0.5.0
+mo.sqlalchemy == 0.3.2
+inflect == 5.0.2
+arrow == 0.17.0
+PyJWT == 2.0.1
