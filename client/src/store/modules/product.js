@@ -114,12 +114,12 @@ export default {
         result = await myAxios.post('products', product)
         status = result.status
       } catch (e) {
-        throw new Error(e.response.data.message)
+        throw new Error(e.response.data.title)
       }
 
       if (status === 201) {
         await dispatch('getProducts')
-        return Promise.resolve(result.data.message)
+        return Promise.resolve(result.data.title)
       }
     },
 
@@ -128,7 +128,7 @@ export default {
       try {
         result = await myAxios.patch(`products/${product.id}`, { name: product.name, count: product.count, price: product.price, date_add: product.date_add })
       } catch (e) {
-        throw new Error(e.response.data.message)
+        throw new Error(e.response.data.title)
       }
       commit('updateProduct', result.data)
       return Promise.resolve('Данные успешно обновленны')

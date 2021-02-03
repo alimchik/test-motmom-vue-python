@@ -24,14 +24,14 @@ class Login:
         
         if not user:
             resp.status = falcon.HTTP_401
-            resp.body = json.dumps({'message': 'Пользователя с таким Email не существует'})
+            resp.body = json.dumps({'title': 'Пользователя с таким Email не существует'})
             return
 
         is_match = bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8'))
 
         if not is_match:
             resp.status = falcon.HTTP_401
-            resp.body = json.dumps({'message': 'Неверный пароль'})
+            resp.body = json.dumps({'title': 'Неверный пароль'})
             return
 
         # token = jwt.encode({"id": user.id, "exp": (datetime.now() + timedelta(seconds=20)).timestamp() * 1000}, "testmotmom", algorithm="HS256").decode('utf8')
@@ -50,14 +50,14 @@ class Registration:
         candidat = m.User.objects.query().filter_by(email=email).first()
         if candidat:
           resp.status = falcon.HTTP_401
-          resp.body = json.dumps({'message': 'Пользователь с таким Email уже существует'})
+          resp.body = json.dumps({'title': 'Пользователь с таким Email уже существует'})
           return
 
         hash_password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
         user = m.User(email=email, password=hash_password).save()
         user.db_session.commit()
         resp.status = falcon.HTTP_201
-        resp.body = json.dumps({'message': 'Пользоватль успешно создан'})
+        resp.body = json.dumps({'title': 'Пользоватль успешно создан'})
 
 class Refresh:
     def on_get(self, req, resp):

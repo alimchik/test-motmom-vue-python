@@ -21,7 +21,7 @@ class Products:
         # # raise falcon.HTTPBadRequest(title='title', description='adasdashdahsdasdhasdad')
         product.db_session.commit()
         resp.status = falcon.HTTP_201
-        resp.body = json.dumps({'message': 'Продукт успешно добавлен'})
+        resp.body = json.dumps({'title': 'Продукт успешно добавлен'})
     
     def on_delete(self, req, resp):
         body = json.loads(req.stream.read())

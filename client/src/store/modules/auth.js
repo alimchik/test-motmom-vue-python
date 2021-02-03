@@ -1,4 +1,5 @@
 import { myAxios } from '@/api/http-common'
+import expDateToken from '../../helpers/expDateToken.js'
 
 export default {
   state: {
@@ -36,10 +37,10 @@ export default {
       try {
         const result = await myAxios.post('auth/registr', user)
         if (result.status === 201) {
-          return Promise.resolve(result.data.message)
+          return Promise.resolve(result.data.title)
         }
       } catch (e) {
-        throw new Error(e.response.data.message)
+        throw new Error(e.response.data.title)
       }
     },
     async login ({ commit }, user) {
@@ -54,16 +55,13 @@ export default {
           commit('authSuccess', token, user)
         }
       } catch (e) {
-        throw new Error(e.response.data.message)
+        throw new Error(e.response.data.title)
       }
     },
 
     refreshJWT ({ commit }) {
       let token = localStorage.getItem('token')
-      let beginIndex = token.indexOf('.') + 1
-      let endIndex = token.indexOf('.', beginIndex)
-      let publicKey = token.substring(beginIndex, endIndex)
-      let expDate = JSON.parse(atob(publicKey)).exp * 1000
+      let expDate = expDateToken(token)
 
       let howMuchToRefresh = new Date((new Date(expDate)).getTime() - 1000 * 10)
       let currentTime = new Date()
@@ -76,10 +74,7 @@ export default {
             if (dif > 0) {
               const result = await myAxios.get('auth/refresh')
               token = result.data.token
-              beginIndex = token.indexOf('.') + 1
-              endIndex = token.indexOf('.', beginIndex)
-              publicKey = token.substring(beginIndex, endIndex)
-              expDate = JSON.parse(atob(publicKey)).exp * 1000
+              expDate = expDateToken(token)
               howMuchToRefresh = new Date((new Date(expDate)).getTime() - 1000 * 10)
               currentTime = new Date()
               dif = howMuchToRefresh - currentTime
