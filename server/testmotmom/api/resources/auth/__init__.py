@@ -33,7 +33,7 @@ class Login:
             return
 
         # token = jwt.encode({"id": user.id, "exp": (datetime.now() + timedelta(seconds=20)).timestamp() * 1000}, "testmotmom", algorithm="HS256").decode('utf8')
-        token = jwt.encode({"id": user.id, "exp": arrow.utcnow().shift(seconds=120).timestamp}, "testmotmom", algorithm="HS256")
+        token = jwt.encode({"id": user.id, "exp": arrow.utcnow().shift(seconds=60).timestamp}, "testmotmom", algorithm="HS256")
         resp.body = json.dumps({"token": token, "user": {"id": user.id, "email": user.email}})
 
 class Registration:
@@ -58,5 +58,5 @@ class Registration:
 
 class Refresh:
     def on_get(self, req, resp):
-        token = jwt.encode({"id": req.user_id['id'], "exp": arrow.utcnow().shift(seconds=120).timestamp}, "testmotmom", algorithm="HS256")
+        token = jwt.encode({"id": req.user_id['id'], "exp": arrow.utcnow().shift(seconds=60).timestamp}, "testmotmom", algorithm="HS256")
         resp.body = json.dumps({"token": token})

@@ -125,7 +125,9 @@ export default {
         this.$emit('go-to-page')
         this.$toast.error(err.message)
       })
+    // while (true) {
     this.$store.dispatch('refreshJWT')
+    // }
   },
 
   components: {

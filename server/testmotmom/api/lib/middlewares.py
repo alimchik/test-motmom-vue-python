@@ -20,30 +20,12 @@ class HandleCORS(object):
             raise HTTPStatus(falcon.HTTP_200, body='\n')
 
 class CheckJWT(object):
-    # def process_request(self, req, resp):
-    #     token = req.get_header('autorization')
-    #     print(token)
-    #     import pdb
-    #     pdb.set_trace()
-        # try:
-        #     decoded = jwt.decode(token, 'testmotmom', algorithms=["HS256"])
-        # except Exception:
-        #     import pdb
-        #     pdb.set_trace()
-        #     raise
-    #     curent_time_ms = datetime.now().timestamp() * 1000
-    #     exp = decoded['exp']
-    #     if curent_time_ms > exp:
-    #         print('Токен протух')
-    #     else: 
-    #         print('Токен еще живой')
-
     def process_resource(self, req, resp, resource, params):
         if getattr(resource, 'ignore_auth', None):
             return
-        # token = req.get_header('autorization')
-        # try:
-        #     decoded = jwt.decode(token, 'testmotmom', algorithms=["HS256"])
-        #     req.user_id = {"id": decoded['id']}
-        # except Exception:
-        #     raise falcon.HTTPForbidden('Время авторизации истекло авторизации')
+        token = req.get_header('autorization')
+        try:
+            decoded = jwt.decode(token, 'testmotmom', algorithms=["HS256"])
+            req.user_id = {"id": decoded['id']}
+        except Exception:
+            raise falcon.HTTPForbidden('Время авторизации истекло')
