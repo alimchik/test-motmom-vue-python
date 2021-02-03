@@ -1,16 +1,15 @@
 from testmotmom.models.meta import DBSession
 import falcon
 import jwt
-from datetime import datetime
 from falcon.http_status import HTTPStatus
 
-class SQLAlchemyMiddleware(object):
+class SQLAlchemyMiddleware:
     def process_response(self, req, resp, resource, is_success):
         if not is_success:
             DBSession.rollback()
         DBSession.close()
 
-class HandleCORS(object):
+class HandleCORS:
     def process_request(self, req, resp):
         resp.set_header('Access-Control-Allow-Origin', '*')
         resp.set_header('Access-Control-Allow-Methods', '*')
@@ -19,7 +18,7 @@ class HandleCORS(object):
         if req.method == 'OPTIONS':
             raise HTTPStatus(falcon.HTTP_200, body='\n')
 
-class CheckJWT(object):
+class CheckJWT:
     def process_resource(self, req, resp, resource, params):
         if getattr(resource, 'ignore_auth', None):
             return

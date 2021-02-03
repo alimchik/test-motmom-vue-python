@@ -65,8 +65,8 @@ export default {
     submitHandler () {
       const product = {
         name: this.name,
-        count: this.count,
-        price: this.price,
+        count: Number(this.count),
+        price: Number(this.price),
         date_add: this.date_add
       }
 

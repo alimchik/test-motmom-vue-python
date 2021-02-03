@@ -7,15 +7,17 @@ from datetime import datetime, timedelta
 
 from mo.api.decorators import resource
 
-# from catdog.api.lib.decorators import validate
 from testmotmom import models as m
-#from testmotmom.schemas.product import (ProductSchema)
+from testmotmom.api.lib.validator import validate
+
+from .schema import auth
 
 class Login:
     ignore_auth = True
 
+    @falcon.before(validate(schema=auth))
     def on_post(self, req, resp):
-        body = json.loads(req.stream.read())
+        body = req.context['validated_params']
         email = body['email']
         password = body['password'] 
         user = m.User.objects.query().filter_by(email=email).first()
@@ -38,7 +40,8 @@ class Login:
 
 class Registration:
     ignore_auth = True
-
+    
+    @falcon.before(validate(schema=auth))
     def on_post(self, req, resp):
         body = json.loads(req.stream.read())
         email = body['email']

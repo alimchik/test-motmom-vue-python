@@ -126,7 +126,7 @@ export default {
     async editProduct ({ commit }, product) {
       let result = []
       try {
-        result = await myAxios.patch(`products/${product.id}`, product)
+        result = await myAxios.patch(`products/${product.id}`, { name: product.name, count: product.count, price: product.price, date_add: product.date_add })
       } catch (e) {
         throw new Error(e.response.data.message)
       }

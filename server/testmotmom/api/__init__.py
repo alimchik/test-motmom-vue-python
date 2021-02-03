@@ -4,7 +4,6 @@ from sqlalchemy.engine import create_engine
 
 from testmotmom.models.meta import Base, DBSession
 from testmotmom.api.lib.middlewares import SQLAlchemyMiddleware, HandleCORS, CheckJWT
-
 from testmotmom.api.resources.products.routes import make_routing as product_routing
 from testmotmom.api.resources.auth.routes import make_routing as auth_routing
 

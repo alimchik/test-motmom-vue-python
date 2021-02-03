@@ -3,9 +3,10 @@ import falcon
 
 from mo.api.decorators import resource
 
-# from catdog.api.lib.decorators import validate
+from testmotmom.api.lib.validator import validate
 from testmotmom import models as m
-#from testmotmom.schemas.product import (ProductSchema)
+
+from .schema import product
 
 
 class Products:
@@ -13,8 +14,9 @@ class Products:
         products = m.Product.objects.list(**req.params)
         resp.body = json.dumps(products['items'], default=str)
     
+    @falcon.before(validate(schema=product))
     def on_post(self, req, resp):
-        body = json.loads(req.stream.read())
+        body = req.context['validated_params']
         product = m.Product(name=body['name'], count=body['count'], price=body['price'], date_add=body['date_add']).save()
         # # raise falcon.HTTPBadRequest(title='title', description='adasdashdahsdasdhasdad')
         product.db_session.commit()
@@ -37,9 +39,10 @@ class Product:
         product = m.Product.objects.get(id)
         resp.body = json.dumps(product.jsonify(), default=str)
 
+    @falcon.before(validate(schema=product))
     def on_patch(self, req, resp, id):
         product = m.Product.objects.get(id)
-        body = json.loads(req.stream.read())
+        body = req.context['validated_params']
 
         product.name = body['name']
         product.count = body['count']
