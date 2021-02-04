@@ -20,6 +20,6 @@ def make_app():
     return app
     
 def configure_alchemy():
-    engine = create_engine('postgresql://alimov-artyom:19252630a@localhost/test-motmom')
+    engine = create_engine('postgresql://alimov-artyom:19252630a@postgres/test-motmom')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine

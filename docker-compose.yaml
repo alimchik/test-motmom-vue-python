@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  server:
+    build: server/
+    ports:
+      - '8060:8060'
+    command: 'gunicorn testmotmom.api.wsgi:app -b 0.0.0.0:8060 -t 3600 --reload'
+    volumes:
+      - ./server/migrations:/app/migrations
+      - ./server/testmotmom:/app/testmotmom
+    depends_on:
+      - postgres
+
+  client:
+    build: client/
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./client/src:/usr/src/app/src
+    command: 'npm run serve'
+    depends_on:
+      - server
+
+  postgres:
+    image: postgres:11.5-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: test-motmom
+      POSTGRES_USER: alimov-artyom
+      POSTGRES_PASSWORD: 19252630a
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - '25432:5432'

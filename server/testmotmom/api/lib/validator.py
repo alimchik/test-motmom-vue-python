@@ -54,7 +54,7 @@ def validate(schema, chained_validators=None):
             # pdb.set_trace()
             validate_params(schema, req_params)
         except ValidationError as err:
-            raise falcon.HTTPUnprocessableEntity(title='Ошибка валидации', description=err.message)
+            raise falcon.HTTPUnprocessableEntity(title=err.schema['message'], description=err.message)
         else:
             req.context['validated_params'] = req_params
     return wrapper
